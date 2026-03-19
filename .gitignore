@@ -9,6 +9,8 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
+/[Rr]ecords/
+/[Rr]ecordings/
 /[Uu]ser[Ss]ettings/
 *.log
 
