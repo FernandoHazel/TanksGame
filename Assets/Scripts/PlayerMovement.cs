@@ -23,11 +23,10 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerControls controls;
     Vector2 move;
-    public float speed = 12f;
     public float maxAcceleration = 30f;
-    public float brakeAcceleration = 50f;
     public float turnSensitivity = 1f;
     public float maxSteerAngle = 30f;
+    public float steerSpeed = 0.3f;
     public Vector3 centerOfMass;
     public List<Wheel> wheels;
 
@@ -73,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     {
         foreach (var wheel in wheels)
         {
-            wheel.wheelCollider.motorTorque = move.y * maxAcceleration * Time.deltaTime;
+            wheel.wheelCollider.motorTorque = move.y * maxAcceleration;
         }
     }
 
@@ -84,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
             if (wheel.axel == Axel.Front)
             {
                 var steerAngle = move.x * turnSensitivity * maxSteerAngle;
-                wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, steerAngle, 0.6f);
+                wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, steerAngle, steerSpeed);
             }
         }
     }
