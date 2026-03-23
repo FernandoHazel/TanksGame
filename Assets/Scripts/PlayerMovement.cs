@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
     {
         controls.Player.Disable();
     }
-    
 
     private void Start()
     {
