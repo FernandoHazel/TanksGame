@@ -1,9 +1,10 @@
 using NUnit.Framework;
-using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.InputSystem;
 using System;
+using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using static PlayerMovement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerControls controls;
     Vector2 move;
     public float maxAcceleration = 30f;
+    public float brakeTorque = 1000f;
     public float turnSensitivity = 1f;
     public float maxSteerAngle = 30f;
     public float steerSpeed = 0.3f;
@@ -71,7 +73,18 @@ public class PlayerMovement : MonoBehaviour
     {
         foreach (var wheel in wheels)
         {
-            wheel.wheelCollider.motorTorque = move.y * maxAcceleration;
+            if (Mathf.Abs(move.y) > 0.1f || Mathf.Abs(move.y) < -0.1f)
+            {
+                // Accelerate or reverse
+                wheel.wheelCollider.motorTorque = move.y * maxAcceleration;
+                wheel.wheelCollider.brakeTorque = 0f;
+            }
+            else
+            {
+                // Break completely when no input is given
+                wheel.wheelCollider.motorTorque = 0f;
+                wheel.wheelCollider.brakeTorque = brakeTorque;
+            }
         }
     }
 
