@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     public Vector3 moveOffset;
     public Vector3 rotOffset;
 
-    public Transform carTarget;
+    public Transform scoopeAimingPoint;
 
     private void FixedUpdate()
     {
@@ -19,14 +19,14 @@ public class CameraController : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 targetPos = new Vector3();
-        targetPos = carTarget.TransformPoint(moveOffset);
+        targetPos = scoopeAimingPoint.TransformPoint(moveOffset);
 
         transform.position = Vector3.Lerp(transform.position, targetPos, moveSmoothness * Time.deltaTime);
     }
 
     private void HandleRotation()
     {
-        var direction = carTarget.position - transform.position;
+        var direction = scoopeAimingPoint.position - transform.position;
         var rotation = new Quaternion();
 
         rotation = Quaternion.LookRotation(direction + rotOffset, Vector3.up);
