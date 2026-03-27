@@ -1,20 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace Tanks.Complete
 {
     public class WallHealth : MonoBehaviour
     {
-        public float m_StartingHealth = 100f;               // The amount of health each tank starts with.
-        public Slider m_Slider;                             // The slider to represent how much health the tank currently has.
+        public float m_StartingHealth = 100f;               // The amount of health each beam starts with.
+        public Slider m_Slider;                             // The slider to represent how much health the beam currently has.
         public Image m_FillImage;                           // The image component of the slider.
         public Color m_FullHealthColor = Color.green;    // The color the health bar will be when on full health.
         public Color m_ZeroHealthColor = Color.red;      // The color the health bar will be when on no health.
-        public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the tank dies.
-        [HideInInspector] public bool m_HasShield;          // Has the tank picked up a shield power up?
+        public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the beam dies.
         
-        
-        private AudioSource m_ExplosionAudio;               // The audio source to play when the tank explodes.
+        private AudioSource m_ExplosionAudio;               // The audio source to play when the beam explodes.
         private ParticleSystem m_ExplosionParticles;        // The particle system the will play when the tank is destroyed.
         private float m_CurrentHealth;                      // How much health the tank currently has.
         private bool m_Dead;                                // Has the tank been reduced beyond zero health yet?
@@ -34,6 +34,9 @@ namespace Tanks.Complete
             
             // Set the slider max value to the max health the tank can have
             m_Slider.maxValue = m_StartingHealth;
+
+            // Start with the slider hidden
+            m_Slider.gameObject.SetActive (false);
         }
 
         private void OnDestroy()
@@ -47,7 +50,6 @@ namespace Tanks.Complete
             // When the tank is enabled, reset the tank's health and whether or not it's dead.
             m_CurrentHealth = m_StartingHealth;
             m_Dead = false;
-            m_HasShield = false;
             m_ShieldValue = 0;
             m_IsInvincible = false;
 
@@ -55,12 +57,15 @@ namespace Tanks.Complete
             SetHealthUI();
         }
 
-
         public void TakeDamage (float amount)
         {
             // Check if the tank is not invincible
             if (!m_IsInvincible)
             {
+                // Activate the health slider
+                m_Slider.gameObject.SetActive(true);
+                StartCoroutine(hideHealtSlider());
+
                 // Reduce current health by the amount of damage done.
                 m_CurrentHealth -= amount * (1 - m_ShieldValue);
 
@@ -92,23 +97,6 @@ namespace Tanks.Complete
 
             // Change the UI elements appropriately.
             SetHealthUI();
-        }
-
-
-        public void ToggleShield (float shieldAmount)
-        {
-            // Inverts the value of has shield.
-            m_HasShield = !m_HasShield;
-
-            // Stablish the amount of damage that will be reduced by the shield
-            if (m_HasShield)
-            {
-                m_ShieldValue = shieldAmount;
-            }
-            else
-            {
-                m_ShieldValue = 0;
-            }
         }
 
         public void ToggleInvincibility()
@@ -144,6 +132,13 @@ namespace Tanks.Complete
 
             // Turn the tank off.
             gameObject.SetActive (false);
+        }
+
+        IEnumerator hideHealtSlider()
+        {
+            yield return new WaitForSeconds(2f);
+            // Activate the health slider
+            m_Slider.gameObject.SetActive(false);
         }
     }
 }

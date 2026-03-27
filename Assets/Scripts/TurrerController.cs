@@ -6,12 +6,6 @@ using UnityEngine.InputSystem.Users;
 
 public class TurrerController : MonoBehaviour
 {
-    //TODO:
-    //Rotation
-    //Shooting
-    //Particle effect
-    //Shooting sound effect
-
     PlayerControls controls;
     Vector2 aim;
     public float rotationSpeed = 80f;
