@@ -1,26 +1,22 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-
 namespace Tanks.Complete
 {
     public class WallHealth : MonoBehaviour
     {
-        public float m_StartingHealth = 100f;               // The amount of health each beam starts with.
-        public Slider m_Slider;                             // The slider to represent how much health the beam currently has.
-        public Image m_FillImage;                           // The image component of the slider.
+        public float startingHealth = 100f;               // The amount of health each beam starts with.
+        public Slider sliderReference;                             // The slider to represent how much health the beam currently has.
+        public Slider sliderPrefab;
+        public Image fillImage;                           // The image component of the slider.
         public Color m_FullHealthColor = Color.green;    // The color the health bar will be when on full health.
         public Color m_ZeroHealthColor = Color.red;      // The color the health bar will be when on no health.
         public GameObject m_ExplosionPrefab;                // A prefab that will be instantiated in Awake, then used whenever the beam dies.
-        
+
         private AudioSource m_ExplosionAudio;               // The audio source to play when the beam explodes.
         private ParticleSystem m_ExplosionParticles;        // The particle system the will play when the tank is destroyed.
         private float m_CurrentHealth;                      // How much health the tank currently has.
         private bool m_Dead;                                // Has the tank been reduced beyond zero health yet?
-        private float m_ShieldValue;                        // Percentage of reduced damage when the tank has a shield.
-        private bool m_IsInvincible;                        // Is the tank invincible in this moment?
-
         private void Awake ()
         {
             // Instantiate the explosion prefab and get a reference to the particle system on it.
@@ -31,12 +27,6 @@ namespace Tanks.Complete
 
             // Disable the prefab so it can be activated when it's required.
             m_ExplosionParticles.gameObject.SetActive (false);
-            
-            // Set the slider max value to the max health the tank can have
-            m_Slider.maxValue = m_StartingHealth;
-
-            // Start with the slider hidden
-            m_Slider.gameObject.SetActive (false);
         }
 
         private void OnDestroy()
@@ -48,72 +38,72 @@ namespace Tanks.Complete
         private void OnEnable()
         {
             // When the tank is enabled, reset the tank's health and whether or not it's dead.
-            m_CurrentHealth = m_StartingHealth;
+            m_CurrentHealth = startingHealth;
             m_Dead = false;
-            m_ShieldValue = 0;
-            m_IsInvincible = false;
-
-            // Update the health slider's value and color.
-            SetHealthUI();
         }
 
         public void TakeDamage (float amount)
         {
-            // Check if the tank is not invincible
-            if (!m_IsInvincible)
+            if (sliderReference == null)
             {
-                // Activate the health slider
-                m_Slider.gameObject.SetActive(true);
+                // Get the canvas and set the UI element
+                GameObject canvas = GameObject.Find("ScreenSpaceCameraCanvas");
+                if (canvas != null)
+                {
+                    createUIElement(canvas);
+                    // Change the UI elements appropriately.
+                    SetHealthUI(amount);
+                }
+                else
+                {
+                    Debug.LogError("No canvas with render mode ScreenSpaceCamera found in the scene. Please add one and set its render mode to ScreenSpaceCamera.");
+                }
+            } else {
+                // Change the UI elements appropriately.
+                SetHealthUI(amount);
+            }
+        }
+
+        private void SetHealthUI (float amount)
+        {
+            if (fillImage != null && sliderReference != null)
+            {
                 StartCoroutine(hideHealtSlider());
 
                 // Reduce current health by the amount of damage done.
-                m_CurrentHealth -= amount * (1 - m_ShieldValue);
+                m_CurrentHealth -= amount;
+                
+                // Set the slider's value appropriately.
+                sliderReference.value = m_CurrentHealth;
 
-                // Change the UI elements appropriately.
-                SetHealthUI ();
+                // Interpolate the color of the bar between the choosen colours based on the current percentage of the starting health.
+                fillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth / startingHealth);
 
                 // If the current health is at or below zero and it has not yet been registered, call OnDeath.
                 if (m_CurrentHealth <= 0f && !m_Dead)
                 {
-                    OnDeath ();
+                    OnDeath();
                 }
+
             }
         }
 
-
-        public void IncreaseHealth(float amount)
+        private void createUIElement(GameObject cameraSpaceCanvas)
         {
-            // Check if adding the amount would keep the health within the maximum limit
-            if (m_CurrentHealth + amount <= m_StartingHealth)
-            {
-                // If the new health value is within the limit, add the amount
-                m_CurrentHealth += amount;
-            }
-            else
-            {
-                // If the new health exceeds the starting health, set it at the maximum
-                m_CurrentHealth = m_StartingHealth;
-            }
-
-            // Change the UI elements appropriately.
-            SetHealthUI();
+            // Instantiate prefab
+            Slider sliderInstance = Instantiate(sliderPrefab);
+            // Set the target of that UI element to this transform
+            HealthUIElement healtUIelementRef = sliderInstance.GetComponent<HealthUIElement>();
+            healtUIelementRef.setTarget(transform);
+            // Parent to the canvas
+            sliderInstance.transform.SetParent(cameraSpaceCanvas.transform, false);
+            // Reference to this beam
+            sliderReference = sliderInstance;
+            // Set the slider max value to the max health the tank can have
+            sliderReference.maxValue = startingHealth;
+            fillImage = healtUIelementRef.getFillImage();
+            sliderReference.gameObject.SetActive(true);
         }
-
-        public void ToggleInvincibility()
-        {
-            m_IsInvincible = !m_IsInvincible;
-        }
-
-
-        private void SetHealthUI ()
-        {
-            // Set the slider's value appropriately.
-            m_Slider.value = m_CurrentHealth;
-
-            // Interpolate the color of the bar between the choosen colours based on the current percentage of the starting health.
-            m_FillImage.color = Color.Lerp (m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth / m_StartingHealth);
-        }
-
 
         private void OnDeath ()
         {
@@ -138,7 +128,7 @@ namespace Tanks.Complete
         {
             yield return new WaitForSeconds(2f);
             // Activate the health slider
-            m_Slider.gameObject.SetActive(false);
+            sliderReference.gameObject.SetActive(false);
         }
     }
 }

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6259347615431812839}
   - component: {fileID: 5047672518353681192}
   m_Layer: 0
-  m_Name: SilverShell
+  m_Name: GoldenShell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
