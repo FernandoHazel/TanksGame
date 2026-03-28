@@ -2761,6 +2761,10 @@ PrefabInstance:
       propertyPath: m_FireTransform
       value: 
       objectReference: {fileID: 1505244609}
+    - target: {fileID: 2305866191056277397, guid: 6515f4bdfb1701649b72cd18c2c895cb, type: 3}
+      propertyPath: m_Mass
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8248120370912471329, guid: 6515f4bdfb1701649b72cd18c2c895cb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -6692,7 +6696,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3715613266360709463}
   serializedVersion: 5
-  m_Mass: 350
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
