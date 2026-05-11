@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireShell : MonoBehaviour {
+public class FireShell : MonoBehaviour 
+{
 
     public GameObject bullet;
     public GameObject turret;
     public GameObject shootingPoint;
     public GameObject enemy;
-    //public Transform turretBase;
 
     private float speed = 15.0f;
     private float rotSpeed = 5.0f;
-    private float moveSpeed = 1.0f;
 
     static float delayReset = 1f;
     float delay = delayReset;
@@ -25,11 +24,12 @@ public class FireShell : MonoBehaviour {
 
     float? RotateTurret() 
     {
-        float? angle = CalculateAngle(true);
+        float? angle = CalculateAngle(false);
+        Debug.Log($"Angle: {angle}");
 
         if (angle != null) 
         {
-            turret.transform.localEulerAngles = new Vector3(360.0f - (float)angle, 0.0f, 0.0f);
+            turret.transform.localEulerAngles = new Vector3(360.0f - (float)angle, turret.transform.localEulerAngles.y, 0.0f);
         }
         return angle;
     }
@@ -64,7 +64,6 @@ public class FireShell : MonoBehaviour {
         delay -= Time.deltaTime;
         Vector3 direction = (enemy.transform.position - this.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0.0f, direction.z));
-        //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookRotation, Time.deltaTime * rotSpeed);
         turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, lookRotation, Time.deltaTime * rotSpeed);
         float? angle = RotateTurret();
 

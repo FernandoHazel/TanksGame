@@ -6,7 +6,7 @@ public class AIShell : MonoBehaviour
 {
 
     public GameObject explosion;
-    //Rigidbody rb;
+    Rigidbody rb;
 
     void OnCollisionEnter(Collision col) 
     {
@@ -17,8 +17,7 @@ public class AIShell : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    /*
+    
     void Start() 
     {
         rb = GetComponent<Rigidbody>();
@@ -27,5 +26,5 @@ public class AIShell : MonoBehaviour
     void Update() 
     {
         this.transform.forward = rb.linearVelocity;
-    }*/
+    }
 }
