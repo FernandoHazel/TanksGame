@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5219264262237678100}
   m_Layer: 3
   m_Name: beam
-  m_TagString: Untagged
+  m_TagString: Beam
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,10 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faff3a2dbdddca04a9fb3e64ec5aa740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tanks.Complete.WallHealth
-  m_StartingHealth: 100
+  startingHealth: 100
   sliderReference: {fileID: 0}
   sliderPrefab: {fileID: 9033569792883987971, guid: b74581f510432cb4588f78080bb0f8d3, type: 3}
-  m_FillImage: {fileID: 0}
+  fillImage: {fileID: 0}
   m_FullHealthColor: {r: 0, g: 1, b: 0, a: 1}
   m_ZeroHealthColor: {r: 1, g: 0, b: 0, a: 1}
   m_ExplosionPrefab: {fileID: 151086, guid: 6bc6d0dd8b8428e4ca316513f2cf13c6, type: 3}

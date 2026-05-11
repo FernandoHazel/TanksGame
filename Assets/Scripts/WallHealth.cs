@@ -122,6 +122,7 @@ namespace Tanks.Complete
 
             // Turn the tank off.
             gameObject.SetActive (false);
+            sliderReference.gameObject.SetActive(false);
         }
 
         IEnumerator hideHealtSlider()
