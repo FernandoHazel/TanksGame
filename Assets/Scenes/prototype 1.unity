@@ -8273,6 +8273,10 @@ PrefabInstance:
       propertyPath: carTarget
       value: 
       objectReference: {fileID: 1389461313}
+    - target: {fileID: 412388691926780454, guid: 19ff0fbf2d1d7304baf2d03064c353a0, type: 3}
+      propertyPath: scoopeAimingPoint
+      value: 
+      objectReference: {fileID: 1389461313}
     - target: {fileID: 6801779683351160967, guid: 19ff0fbf2d1d7304baf2d03064c353a0, type: 3}
       propertyPath: m_Name
       value: Main Camera
