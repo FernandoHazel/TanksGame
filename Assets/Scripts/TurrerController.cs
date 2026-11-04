@@ -9,6 +9,13 @@ public class TurrerController : MonoBehaviour
     PlayerControls controls;
     Vector2 aim;
     public float rotationSpeed = 80f;
+    [Tooltip("Ángulo máximo que la torreta puede apuntar hacia arriba (grados).")]
+    public float maxPitchUp = 20f;
+    [Tooltip("Ángulo máximo que la torreta puede apuntar hacia abajo (grados).")]
+    public float maxPitchDown = 10f;
+
+    // Pitch acumulado (apuntado vertical) para poder limitarlo sin ambigüedad de eulerAngles.
+    private float currentPitch = 0f;
     public Rigidbody m_Shell;                   // Prefab of the shell.
     public Transform m_FireTransform;           // A child of the tank where the shells are spawned.
     public AudioSource m_ShootingAudio;       // Reference to the audio source used to play the shooting audio. NB: different to the movement audio source.
@@ -70,12 +77,17 @@ public class TurrerController : MonoBehaviour
     }
 
     void Update()
-    { 
-        // Rotaci�n en eje Y (izquierda/derecha)
-        transform.Rotate(Vector3.up * aim.x * rotationSpeed * Time.deltaTime);
+    {
+        // Rotación en eje Y (izquierda/derecha): libre, sin límite.
+        transform.Rotate(Vector3.up * aim.x * rotationSpeed * Time.deltaTime, Space.World);
 
-        // Rotaci�n en eje X (arriba/abajo)
-        transform.Rotate(Vector3.right * -aim.y * rotationSpeed * Time.deltaTime);
+        // Rotación en eje X (arriba/abajo): acumulada y limitada para que la torreta
+        // no pueda girar indefinidamente. maxPitchUp/maxPitchDown definen el rango.
+        float pitchDelta = -aim.y * rotationSpeed * Time.deltaTime;
+        float newPitch = Mathf.Clamp(currentPitch + pitchDelta, -maxPitchUp, maxPitchDown);
+        // Aplicamos solo la diferencia realmente permitida (respeta el clamp).
+        transform.Rotate(Vector3.right * (newPitch - currentPitch), Space.Self);
+        currentPitch = newPitch;
     }
 
     private void Fire()
