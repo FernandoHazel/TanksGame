@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Level stands proto.unity
+    path: Assets/Scenes/AI Prototype.unity
     guid: 408657d76d70c9d4eaac5e5029334332
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 7df239023466e964ab0d92b0c57c84fe, type: 2}

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Beam
   - Floor
+  - Enemy-car
   layers:
   - Default
   - TransparentFX
