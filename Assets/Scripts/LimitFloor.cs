@@ -7,17 +7,22 @@ public class LimitFloor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GameManager.Instance.Loose();
+        }
+
+        if (other.CompareTag("Enemy-car"))
+        {
+            Destroy(other.gameObject);
         }
 
         if (other.CompareTag("Beam"))
         {
-            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
         }
 
         if (other.CompareTag("Floor"))
         {
-            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
         }
     }
 }

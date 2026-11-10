@@ -926,6 +926,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2908599362871157484}
   - component: {fileID: 2838081803153807816}
+  - component: {fileID: 7947891529053049176}
   m_Layer: 0
   m_Name: Enemy-Car
   m_TagString: Enemy-car
@@ -978,6 +979,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &7947891529053049176
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155396684693411671}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.22, y: 1, z: 3.74}
+  m_Center: {x: 0, y: 1.49, z: 0}
 --- !u!1 &4267237275959368632
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,10 +1009,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2678882406621783535}
-  - component: {fileID: 8705736960618867165}
   m_Layer: 0
   m_Name: muscle type c
-  m_TagString: Player
+  m_TagString: Enemy-car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1016,27 +1037,6 @@ Transform:
   - {fileID: 1518471781236812434}
   m_Father: {fileID: 2908599362871157484}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8705736960618867165
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4267237275959368632}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.92, y: 1, z: 3.59}
-  m_Center: {x: 0, y: 1.64, z: 0}
 --- !u!1 &4337590947407004731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1679,6 +1679,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurrerController
   rotationSpeed: 80
+  maxPitchUp: 20
+  maxPitchDown: 10
   m_Shell: {fileID: 5409530, guid: fed8d104ab65fb547bccb729fc057439, type: 3}
   m_FireTransform: {fileID: 1245945329625178626}
   m_ShootingAudio: {fileID: 4834287546053071550}
