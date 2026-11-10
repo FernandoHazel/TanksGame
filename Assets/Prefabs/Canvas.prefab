@@ -2466,7 +2466,7 @@ GameObject:
   - component: {fileID: 3164278255651250175}
   - component: {fileID: 4636289911464365804}
   m_Layer: 5
-  m_Name: NextButton
+  m_Name: NextLevelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2573,7 +2573,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3164278255651250175}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4377597864223979969}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: LoadNextLevelScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7910831409203015081
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,8 +2982,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   mobileControls: {fileID: 1092308076187675780}
   sight: {fileID: 6593267629544158410}
-  looseScreen: {fileID: 6531699279911193675}
   winScreen: {fileID: 545320475250357812}
+  looseScreen: {fileID: 6531699279911193675}
 --- !u!1 &8812417630866671124
 GameObject:
   m_ObjectHideFlags: 0

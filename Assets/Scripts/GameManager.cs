@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Start()
     {
         if (Instance == null)
@@ -31,5 +36,11 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.ActivateLooseScreen();
         Time.timeScale = 0f;
+    }
+
+    public void StartNewLevel()
+    {
+        // Reseteamos todos los estados necesarios.
+        Time.timeScale = 1f;
     }
 }

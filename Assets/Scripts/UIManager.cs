@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     private GameObject winScreen;
     [SerializeField]
     private GameObject looseScreen;
-    
+
     void Start()
     {
         if (Instance == null)
@@ -36,11 +36,17 @@ public class UIManager : MonoBehaviour
     public void LoadActiveScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.Instance.StartNewLevel();
+        winScreen.SetActive(false);
+        looseScreen.SetActive(false);
     }
 
-    public void LoadNextLevelScene()
+    public void LoadNextLevelScene(string levelName)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name + 1);
+        SceneManager.LoadScene(levelName);
+        GameManager.Instance.StartNewLevel();
+        winScreen.SetActive(false);
+        looseScreen.SetActive(false);
     }
 
     private void DisableChilds()
