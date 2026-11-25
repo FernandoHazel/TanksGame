@@ -118,6 +118,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Accelerate"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9517e68-f01a-4b74-8a9b-170a32f03880"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""666e3811-7bf0-4b3d-be27-bee07225a76b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -395,6 +413,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df6a82a2-bf24-47b6-95d4-f152f9e84e3c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Accelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a3e67a1-4f12-40f7-8365-ba5e2222bf9f"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -440,6 +480,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_Accelerate = m_Player.FindAction("Accelerate", throwIfNotFound: true);
+        m_Player_Brake = m_Player.FindAction("Brake", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -523,6 +565,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_Accelerate;
+    private readonly InputAction m_Player_Brake;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -546,6 +590,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Shoot".
         /// </summary>
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Accelerate".
+        /// </summary>
+        public InputAction @Accelerate => m_Wrapper.m_Player_Accelerate;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Brake".
+        /// </summary>
+        public InputAction @Brake => m_Wrapper.m_Player_Brake;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -581,6 +633,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @Accelerate.started += instance.OnAccelerate;
+            @Accelerate.performed += instance.OnAccelerate;
+            @Accelerate.canceled += instance.OnAccelerate;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
         }
 
         /// <summary>
@@ -601,6 +659,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @Accelerate.started -= instance.OnAccelerate;
+            @Accelerate.performed -= instance.OnAccelerate;
+            @Accelerate.canceled -= instance.OnAccelerate;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
         }
 
         /// <summary>
@@ -701,5 +765,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnShoot(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Accelerate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAccelerate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Brake" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBrake(InputAction.CallbackContext context);
     }
 }

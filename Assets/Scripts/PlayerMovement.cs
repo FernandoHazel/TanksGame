@@ -37,9 +37,17 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         controls = new PlayerControls();
+
+        // Set up input callbacks for steering
         controls.Player.Move.performed += ctx => move =
     ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => move = Vector2.zero;
+
+        // Set up input callbacks for acceleration and braking
+        controls.Player.Accelerate.performed += ctx => Accelerate();
+        controls.Player.Accelerate.canceled += ctx => Brake();
+        controls.Player.Brake.performed += ctx => Reverse();
+        controls.Player.Brake.canceled += ctx => Brake();
     }
 
     private void OnEnable()
@@ -65,26 +73,36 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
         Steer();
     }
 
-    private void Move()
+    private void Accelerate()
     {
+        Debug.Log("Accelarating");
         foreach (var wheel in wheels)
         {
-            if (Mathf.Abs(move.y) > 0.1f || Mathf.Abs(move.y) < -0.1f)
-            {
-                // Accelerate or reverse
-                wheel.wheelCollider.motorTorque = move.y * maxAcceleration;
-                wheel.wheelCollider.brakeTorque = 0f;
-            }
-            else
-            {
-                // Break completely when no input is given
-                wheel.wheelCollider.motorTorque = 0f;
-                wheel.wheelCollider.brakeTorque = brakeTorque;
-            }
+            wheel.wheelCollider.motorTorque = maxAcceleration;
+            wheel.wheelCollider.brakeTorque = 0f;
+        }
+    }
+
+    private void Brake()
+    {
+        Debug.Log("Braking");
+        foreach (var wheel in wheels)
+        {
+            wheel.wheelCollider.motorTorque = 0f;
+            wheel.wheelCollider.brakeTorque = brakeTorque;
+        }
+    }
+
+    private void Reverse()
+    {
+        Debug.Log("Reverse");
+        foreach (var wheel in wheels)
+        {
+            wheel.wheelCollider.motorTorque = - maxAcceleration;
+            wheel.wheelCollider.brakeTorque = 0f;
         }
     }
 
