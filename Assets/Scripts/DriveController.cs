@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static DriveController;
 
 public class DriveController : MonoBehaviour
 {
@@ -27,13 +28,34 @@ public class DriveController : MonoBehaviour
         public Axel axel;
     }
 
+    [Serializable]
+    public struct FrictionSettings
+    {
+        public float extremumSlip;
+        public float extremumValue;
+        public float asymptoteSlip;
+        public float asymptoteValue;
+        public float stiffness;
+
+        public WheelFrictionCurve ToCurve() => new WheelFrictionCurve
+        {
+            extremumSlip = extremumSlip,
+            extremumValue = extremumValue,
+            asymptoteSlip = asymptoteSlip,
+            asymptoteValue = asymptoteValue,
+            stiffness = stiffness
+        };
+    }
+
     PlayerControls controls;
     Vector2 move;
 
     [Tooltip("FWD: Only apply motor torque to the front wheels for a front-wheel drive car (normal cars)\r\n RWD: Only apply motor torque to the rear wheels for a rear-wheel drive car (sports cars, this allow drifting)\r\n AWD: Apply motor torque to all wheels for an all-wheel drive car (off-road vehicles, SUVs)s")]
     public DriveType driveType = DriveType.RWD;
+    public float rbMass = 1500f;
     public float maxAcceleration = 30f;
     public float brakeTorque = 1000f;
+    public float linearDrag = 0.1f;
     [Tooltip("Soft brake torque applied when there is no input")]
     public float coastBrakeTorque = 150f;
     [Tooltip("Speed (m/s) below which the car is considered stopped")]
@@ -48,6 +70,32 @@ public class DriveController : MonoBehaviour
     private Rigidbody carRb;
     private bool isAccelerating;
     private bool isBraking;
+
+    [Header("Wheels Friction curves")]
+    public FrictionSettings forwardFriction = new FrictionSettings
+    {
+        extremumSlip = 0.4f,
+        extremumValue = 1f,
+        asymptoteSlip = 0.8f,
+        asymptoteValue = 0.5f,
+        stiffness = 1f
+    };
+
+    public FrictionSettings sidewaysFriction = new FrictionSettings
+    {
+        extremumSlip = 0.2f,
+        extremumValue = 1f,
+        asymptoteSlip = 0.5f,
+        asymptoteValue = 0.75f,
+        stiffness = 1f
+    };
+
+    // TEMP: For testing or youtube video, remove later
+    [Header("TEMP: For testing or youtube video, remove later")]
+    public GameObject accelerateImage;
+    public GameObject decelerateImage;
+    public GameObject brakingImage;
+    public GameObject releaseBrakeImage;
 
     private void Awake()
     {
@@ -79,6 +127,14 @@ public class DriveController : MonoBehaviour
     {
         carRb = GetComponent<Rigidbody>();
         carRb.centerOfMass = centerOfMass;
+        carRb.mass = rbMass;
+        carRb.linearDamping = linearDrag;
+        setupWheelPhysics();
+
+        accelerateImage.SetActive(false);
+        decelerateImage.SetActive(true);
+        brakingImage.SetActive(false);
+        releaseBrakeImage.SetActive(true);
     }
 
     private void Update()
@@ -89,7 +145,17 @@ public class DriveController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateDrive();
-        // Steer();
+        Steer();
+    }
+
+    private void setupWheelPhysics()
+    {
+        foreach (var wheel in wheels)
+        {
+            wheel.wheelCollider.forwardFriction = forwardFriction.ToCurve();
+            wheel.wheelCollider.sidewaysFriction = sidewaysFriction.ToCurve();
+
+        }
     }
 
     private void UpdateDrive()
@@ -100,25 +166,50 @@ public class DriveController : MonoBehaviour
 
         if (isBraking && forwardSpeed > stopSpeedThreshold)
         {
+            accelerateImage.SetActive(false);
+            decelerateImage.SetActive(true);
+            brakingImage.SetActive(true);
+            releaseBrakeImage.SetActive(false);
+
             // Moving forward: brake
             SetDriveTorque(0f, brakeTorque);
         }
         else if (isBraking)
         {
+            accelerateImage.SetActive(false);
+            decelerateImage.SetActive(true);
+            brakingImage.SetActive(true);
+            releaseBrakeImage.SetActive(false);
+
             // Stopped or moving backward: reverse
             SetDriveTorque(-maxAcceleration, 0f);
         }
         else if (isAccelerating)
         {
+            accelerateImage.SetActive(true);
+            decelerateImage.SetActive(false);
+            brakingImage.SetActive(false);
+            releaseBrakeImage.SetActive(true);
+
             SetDriveTorque(maxAcceleration, 0f);
         }
         else if (Mathf.Abs(forwardSpeed) < stopSpeedThreshold)
         {
+            accelerateImage.SetActive(false);
+            decelerateImage.SetActive(true);
+            brakingImage.SetActive(false);
+            releaseBrakeImage.SetActive(true);
+
             // No input and nearly stopped: hold the car
             SetDriveTorque(0f, brakeTorque);
         }
         else
         {
+            accelerateImage.SetActive(false);
+            decelerateImage.SetActive(true);
+            brakingImage.SetActive(false);
+            releaseBrakeImage.SetActive(true);
+
             // No input: coast with soft braking
             SetDriveTorque(0f, coastBrakeTorque);
         }
