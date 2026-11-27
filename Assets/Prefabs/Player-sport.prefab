@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 113715400285653962}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0050002933, y: 0.13199991, z: -0.003996253}
+  m_LocalPosition: {x: 0.0050002933, y: 0, z: -0.003996253}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -128,7 +128,7 @@ Transform:
   m_GameObject: {fileID: 1344442840946638311}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.13199991, z: 0.005003333}
+  m_LocalPosition: {x: 0, y: 0, z: 0.005003333}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -535,7 +535,7 @@ Transform:
   m_GameObject: {fileID: 3612973134798632373}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.16, z: -0.009}
+  m_LocalPosition: {x: 0, y: 0, z: -0.009}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -606,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 3687814173349816030}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0050002933, y: 0.13199991, z: 0.005003333}
+  m_LocalPosition: {x: 0.0050002933, y: 0, z: 0.005003333}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -879,10 +879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6beb05fc4be481a4296925fef54f8309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  maxAcceleration: 500
+  maxAcceleration: 300
   brakeTorque: 1000
-  turnSensitivity: 1
-  maxSteerAngle: 60
+  turnSensitivity: 0.2
+  maxSteerAngle: 30
   steerSpeed: 0.3
   centerOfMass: {x: 0, y: 0, z: 0}
   wheels:
@@ -906,7 +906,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5669594129994475434}
   serializedVersion: 5
-  m_Mass: 200
+  m_Mass: 1500
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -918,8 +918,8 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
